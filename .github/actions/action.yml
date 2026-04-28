@@ -1,0 +1,27 @@
+name: "Run Maven Build"
+description: "Build and test a Maven Spring Boot application"
+
+inputs:
+  java-version:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: ${{ inputs.java-version }}
+
+    - name: Build with Maven
+      run: mvn -B clean install
+      shell: bash
+
+    - name: Run tests
+      run: mvn test
+      shell: bash
